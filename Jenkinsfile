@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clonar repositorio') {
             steps {
-                git 'https://github.com/mauro-1508/jenkins.git'
+                git branch: 'main', url: 'https://github.com/mauro-1508/jenkins.git'
             }
         }
 
