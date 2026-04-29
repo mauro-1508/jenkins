@@ -15,19 +15,19 @@ pipeline {
 
         stage('Build imagen') {
             steps {
-                bat 'docker build -t %IMAGE_NAME% .'
+                sh 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Login Docker Hub') {
             steps {
-                bat 'docker login -u TU_USUARIO -p TU_PASSWORD'
+                sh 'docker login -u TU_USUARIO -p TU_PASSWORD'
             }
         }
 
         stage('Push imagen') {
             steps {
-                bat 'docker push %IMAGE_NAME%'
+                sh 'docker push %IMAGE_NAME%'
             }
         }
     }
