@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'tuusuario/jenkins-test'
+        IMAGE_NAME = 'mauro1508/jenkins-test'
     }
 
     stages {
@@ -15,19 +15,25 @@ pipeline {
 
         stage('Build imagen') {
             steps {
-                sh 'docker build -t %IMAGE_NAME% .'
+                sh 'docker build -t ${IMAGE_NAME} .'
             }
         }
 
         stage('Login Docker Hub') {
             steps {
-                sh 'docker login -u TU_USUARIO -p TU_PASSWORD'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
             }
         }
 
         stage('Push imagen') {
             steps {
-                sh 'docker push %IMAGE_NAME%'
+                sh 'docker push ${IMAGE_NAME}'
             }
         }
     }
