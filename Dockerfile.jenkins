@@ -1,5 +1,16 @@
 FROM jenkins/jenkins:lts
 
 USER root
+
+# Instalar Docker
 RUN apt-get update && apt-get install -y docker.io
+
+# (Opcional pero recomendado) Node y npm
+RUN apt-get install -y nodejs npm
+
+# (Opcional) Composer
+RUN apt-get install -y php-cli unzip curl \
+    && curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
+
 USER jenkins

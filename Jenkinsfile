@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'tuusuario/jenkins-test'
+    }
+
     stages {
 
         stage('Clonar repositorio') {
@@ -9,15 +13,21 @@ pipeline {
             }
         }
 
-        stage('Construir imagen Docker') {
+        stage('Build imagen') {
             steps {
-                sh 'docker build -t jenkins-test .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
-        stage('Ejecutar contenedor') {
+        stage('Login Docker Hub') {
             steps {
-                sh 'docker run -d -p 8001:8000 jenkins-test'
+                bat 'docker login -u TU_USUARIO -p TU_PASSWORD'
+            }
+        }
+
+        stage('Push imagen') {
+            steps {
+                bat 'docker push %IMAGE_NAME%'
             }
         }
     }
